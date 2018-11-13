@@ -27,12 +27,13 @@ def load():
 # 将返回的店铺信息 统计单个店铺的词云
 def deal(ls):
     for i in range(len(ls)):
-        name = ls[i].id
-        for j in range(i,len(ls)):
-            if ls[j].id == name and ls[j].flag == False:
-                ls[i].review += ls[j].review
-                ls[j].flag=True
-                ls[i].count+=1
+        if ls[i].flag == False:
+            name = ls[i].id
+            for j in range(i, len(ls)):
+                if ls[j].id == name and ls[j].flag == False:
+                    ls[i].review += ls[j].review
+                    ls[j].flag = True
+                    ls[i].count += 1
     return ls
 # 将结果写入文件
 def output(ls):
@@ -53,11 +54,11 @@ def cloud():
     text = fr.read()
     fr.close()
     # jieba分词
-    removes = ['团购', '点评', '但是', '还是', '感觉', '就是', '而且', '没有', '还有', '不过', '知道']
+    removes = ['团购', '点评', '但是', '还是', '感觉', '就是', '而且', '没有',
+               '还有', '不过', '知道','什么','比较','这里''我们','以前','一下','一次']
     for w in removes:
         jieba.del_word(w)
     words = jieba.lcut(text)
-    words = [w for w in words if w not in removes]
     cuted = ' '.join(words)
     # wordCloud 生成词云
     fontpath = "SourceHanSansCN-Regular.otf"
@@ -79,7 +80,7 @@ def cloud():
     plt.figure(dpi=100)
     plt.imshow(wc, interpolation='catrom', vmax=1000)
     plt.axis('off')
-    plt.savefig("zongpingfen1.jpg")
+    plt.savefig("./CloudImages/zongpingfen.jpg")
     plt.show()
 if __name__ == "__main__":
     cloud()
