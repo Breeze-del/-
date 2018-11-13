@@ -1,17 +1,23 @@
 from http.server import HTTPServer, BaseHTTPRequestHandler
 import json
+from flask import Flask,request
+# 配置路由
+app=Flask(__name__)
 
-data = {'result': 'this is a test'}
-host = ('localhost', 8888)
+@app.route('/')
+def hello_wordl():
+    return "Hello, world"
+# jquerry get 请求
+@app.route('/worldCloud')
+def worldCloud():
+    # 获取参数
+    itemid = request.args.get('itemid')
+    return itemid
 
-class Resquest(BaseHTTPRequestHandler):
-    def do_GET(self):
-        self.send_response(200)
-        self.send_header('Content-type', 'application/json')
-        self.end_headers()
-        self.wfile.write(json.dumps(data).encode())
+# 直接返回id
+@app.route('/worldCloud/<id>')
+def world(id):
+    return id
 
-if __name__ == '__main__':
-    server = HTTPServer(host, Resquest)
-    print("Starting server, listen at: %s:%s" % host)
-    server.serve_forever()
+if __name__=="__main__":
+    app.run()
