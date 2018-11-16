@@ -4,20 +4,21 @@ import os
 import jieba
 import matplotlib.pyplot as plt
 from wordcloud import WordCloud,STOPWORDS,ImageColorGenerator
-from flask import Flask,request
+from flask import Flask,request,url_for
 
 # worldcloud 词云分析的rest -- GET接口 接受参数itemid（店铺的id）
 # 生成词云图片，并返回图片路径
 
 # 定义入口
-app = Flask(__name__)
+app = Flask(__name__, static_folder="D://Pythonfile/venv/worldCloud/wordcloud/wc_rest")
 # 定义文件路径
-imageRoute="./CloudImages/"
+imageRoute="/CloudImages/"
 
 # 定义词云接口
 @app.route('/worldCloud')
 def worldCloud():
     itemid = request.args.get('itemid')
+    print(itemid)
     # 该照片已经生成
     if itemid in imageBuf.keys():
         return imageRoute+itemid+".jpg"
@@ -88,7 +89,6 @@ def IB():
 
 if __name__=="__main__":
     # 将文件目录放进去
-    os.chdir("D://Pythonfile/venv/worldCloud/wordcloud/wc_rest")
     items = JD()
     # 为了提高系统的速度，做一个缓存字典
     imageBuf = IB()
